@@ -47,6 +47,7 @@ group :test do
 end
 
 group :production do
+  # In production use postgress
   gem 'pg'
 end
 
