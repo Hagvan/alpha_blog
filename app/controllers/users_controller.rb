@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
 
-  before_action :set_user, only: [:show, :edit, :update]
-  before_action :require_user, except: [:show, :index]
+  before_action :set_user, only: [:show, :edit, :update, :destroy]
+  before_action :require_user, except: [:show, :index, :new, :create]
   before_action :require_same_user, only: [:edit, :update, :destroy]
 
   def show
@@ -20,7 +20,7 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
     if @user.save
       session[:user_id] = @user.id
-      flash[:notice] = "Welcome to Alpha Blog #{@user.username}, you have successfully signed up"
+      flash[:notice] = "Welcome to Alpha Blog #{@user.username}, you have successfully signed up!"
       redirect_to root_path
     else
       render 'new'
@@ -37,6 +37,13 @@ class UsersController < ApplicationController
     else
       render 'edit'
     end
+  end
+
+  def destroy
+    @user.destroy
+    session[:user_id] = nil
+    flash[:notice] = "Profile and all associated articles successfully deleted."
+    redirect_to root_path
   end
 
   private
